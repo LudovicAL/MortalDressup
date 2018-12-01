@@ -10,8 +10,24 @@ public class SoundManager : MonoBehaviour {
     public float lowPitchRange = .95f;              //The lowest a sound effect will be randomly pitched.
     public float highPitchRange = 1.05f;            //The highest a sound effect will be randomly pitched.
     public AudioClip[] punchSounds;
+    public AudioClip fightSound;
+    public AudioClip fatalitySound;
+
+    public void playRandomPunchSound() {
+        int randomIndex = Random.Range(0, punchSounds.Length);
+        efxSource.PlayOneShot(punchSounds[randomIndex]);
+    }
+
+    public void playFightSound() {
+        efxSource.PlayOneShot(fightSound);
+    }
+
+    public void playFatalitySound() {
+        efxSource.PlayOneShot(fatalitySound);
+    }
 
     void Start () {
+        Awake();
         efxSource = GetComponent<AudioSource>();
         musicSource = GetComponent<AudioSource>();
         punchSounds = loadPunchSounds();
@@ -22,7 +38,7 @@ public class SoundManager : MonoBehaviour {
 		
 	}
 
-    public AudioClip[] loadPunchSounds() {
+    AudioClip[] loadPunchSounds() {
 
         AudioClip[] clips = new AudioClip[12];
         //Load an AudioClip (Assets/Resources/Audio/audioClip01.mp3)
@@ -43,9 +59,9 @@ public class SoundManager : MonoBehaviour {
         return clips;
     }
 
-    public void playRandomPunchSound() {
-        int randomIndex = Random.Range(0, punchSounds.Length);
-        efxSource.PlayOneShot(punchSounds[randomIndex]);
+    void loadOtherSounds() {
+        fightSound = Resources.Load<AudioClip>("Audio/Fight Sound Effect - Free Download (320  kbps)");
+        fatalitySound = Resources.Load<AudioClip>("Audio/Fatality! - Sound Effect [Mortal Kombat] (320  kbps)");
     }
 
     void Awake() {
