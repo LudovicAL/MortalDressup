@@ -12,6 +12,7 @@ public class SoundManager : MonoBehaviour {
     public AudioClip[] punchSounds;
     public AudioClip fightSound;
     public AudioClip fatalitySound;
+    public AudioClip themeSound;
 
     public void playRandomPunchSound() {
         int randomIndex = Random.Range(0, punchSounds.Length);
@@ -24,6 +25,12 @@ public class SoundManager : MonoBehaviour {
 
     public void playFatalitySound() {
         efxSource.PlayOneShot(fatalitySound);
+    }
+
+    public void playThemeSong() {
+        musicSource.loop = true;
+        musicSource.clip = themeSound;
+        musicSource.Play();
     }
 
     void Start () {
@@ -62,6 +69,7 @@ public class SoundManager : MonoBehaviour {
     void loadOtherSounds() {
         fightSound = Resources.Load<AudioClip>("Audio/Fight Sound Effect - Free Download (320  kbps)");
         fatalitySound = Resources.Load<AudioClip>("Audio/Fatality! - Sound Effect [Mortal Kombat] (320  kbps)");
+        themeSound = Resources.Load<AudioClip>("Mortal Kombat Theme Song Original (320  kbps)");
     }
 
     void Awake() {
