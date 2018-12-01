@@ -52,11 +52,9 @@ public class Character : MonoBehaviour {
 	void Update () {
 		// Horizontal movement
 		xSpeed = Input.GetAxis(controller.lHorizontal) * movementForceHorizontal;
-        Debug.Log(isJumping);
-		// Vertical movement # jump
+        // Vertical movement # jump
 		if (Input.GetButtonDown(controller.buttonB) && !isJumping) {
             isJumping = true;
-			Debug.Log(rigidBody2D.velocity);
 			rigidBody2D.AddForce(transform.up * movementForceVertical, ForceMode2D.Impulse);
 		}
 
