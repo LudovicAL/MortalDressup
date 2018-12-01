@@ -1,15 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour {
 
-    readonly string strMenu = "MenuPanel";
     readonly string strJoin = "Panel PlayerList";
+    readonly string strMenuPanel = "MenuPanel";
     readonly string strStart = "StartPanel";
     readonly string strChoosePlayer = "ChoosePlayerPanel";
     readonly string strDressup = "DressUpPanel";
+    readonly string strCountDown = "CountDownPanel";
+    readonly string strGame = "GamePanel";
     readonly string strScriptBucket = "ScriptBucket";
+    readonly string strCountDownText = "CountDownText";
 
     bool isFirstMenu;
 
@@ -20,15 +24,19 @@ public class MenuManager : MonoBehaviour {
         JOIN,
         START,
         CHOOSE,
-        DRESSUP
+        DRESSUP,
+        COUNTDOWN,
+        GAME
     }
 
-    GameObject rootGo;
     GameObject menuPanel;
     GameObject joinPanel;
     GameObject startPanel;
     GameObject choosePlayerPanel;
     GameObject dressupPanel;
+    GameObject countDownPanel;
+    GameObject gamePanel;
+    Text countDownText;
 
     public static menuPanels currentMenu;
 
@@ -41,23 +49,23 @@ public class MenuManager : MonoBehaviour {
         gameStatesManager.PausedGameState.AddListener(OnPausing);
         SetState(gameStatesManager.gameState);
 
-        rootGo = this.gameObject;
-        menuPanel = getMenuObject(rootGo, strMenu);
-        joinPanel = getMenuObject(menuPanel, strJoin);
-        startPanel = getMenuObject(menuPanel, strStart);
-        choosePlayerPanel = getMenuObject(menuPanel, strChoosePlayer);
-        dressupPanel = getMenuObject(menuPanel, strDressup);
+        menuPanel = this.gameObject.transform.Find(strMenuPanel).gameObject;
+        joinPanel = getMenuObject(strJoin);
+        startPanel = getMenuObject(strStart);
+        choosePlayerPanel = getMenuObject(strChoosePlayer);
+        dressupPanel = getMenuObject(strDressup);
+        countDownPanel = getMenuObject(strCountDown);
+        countDownText = countDownPanel.transform.Find(strCountDownText).gameObject.GetComponent<Text>();
+        gamePanel = getMenuObject(strGame);
         onFirstMenu();
     }
 
     public void onFirstMenu() {
         isFirstMenu = false;
-        menuPanel.SetActive(true);
         showMenuPanel(menuPanels.JOIN);
     }
 
     public void onEndGame() {
-        menuPanel.SetActive(true);
         showMenuPanel(menuPanels.CHOOSE);
     }
 
@@ -73,7 +81,13 @@ public class MenuManager : MonoBehaviour {
                 showMenuPanel(menuPanels.DRESSUP);
                 break;
             case menuPanels.DRESSUP:
-                Close();
+                showMenuPanel(menuPanels.COUNTDOWN);
+                break;
+            case menuPanels.COUNTDOWN:
+                showMenuPanel(menuPanels.GAME);
+                break;
+            case menuPanels.GAME:
+                //Do nothing here. We can't go forward during GAME
                 break;
         }
     }
@@ -91,8 +105,13 @@ public class MenuManager : MonoBehaviour {
             case menuPanels.DRESSUP:
                 showMenuPanel(menuPanels.CHOOSE);
                 break;
+            case menuPanels.COUNTDOWN:
+                //Do nothing here. We can't go backward during COUNTDOWN
+                break;
+            case menuPanels.GAME:
+                //Do nothing here. We can't go backward during GAME
+                break;
         }
-
     }
 
     void showMenuPanel(menuPanels panel) {
@@ -105,32 +124,62 @@ public class MenuManager : MonoBehaviour {
                 startPanel.SetActive(false);
                 choosePlayerPanel.SetActive(false);
                 dressupPanel.SetActive(false);
+                countDownPanel.SetActive(false);
                 break;
             case menuPanels.START:
                 joinPanel.SetActive(false);
                 startPanel.SetActive(true);
                 choosePlayerPanel.SetActive(false);
                 dressupPanel.SetActive(false);
+                countDownPanel.SetActive(false);
                 break;
             case menuPanels.CHOOSE:
                 joinPanel.SetActive(false);
                 startPanel.SetActive(false);
                 choosePlayerPanel.SetActive(true);
                 dressupPanel.SetActive(false);
+                countDownPanel.SetActive(false);
                 break;
             case menuPanels.DRESSUP:
                 joinPanel.SetActive(false);
                 startPanel.SetActive(false);
                 choosePlayerPanel.SetActive(false);
                 dressupPanel.SetActive(true);
+                countDownPanel.SetActive(false);
+                break;
+            case menuPanels.COUNTDOWN:
+                RequestGameStateChange(StaticData.AvailableGameStates.Starting);
+                joinPanel.SetActive(false);
+                startPanel.SetActive(false);
+                choosePlayerPanel.SetActive(false);
+                dressupPanel.SetActive(false);
+                countDownPanel.SetActive(true);
+                StartCoroutine(startCountDown());
+                break;
+            case menuPanels.GAME:
+                RequestGameStateChange(StaticData.AvailableGameStates.Playing);
+                joinPanel.SetActive(false);
+                startPanel.SetActive(false);
+                choosePlayerPanel.SetActive(false);
+                dressupPanel.SetActive(false);
+                countDownPanel.SetActive(false);
+                gamePanel.SetActive(true);
                 break;
         }
     }
 
-    GameObject getMenuObject(GameObject go, string strToFind) {
-        return go.transform.Find(strToFind).gameObject;
+    GameObject getMenuObject(string strToFind) {
+        return menuPanel.transform.Find(strToFind).gameObject;
     }
 
+    private IEnumerator startCountDown() {
+        for (int i = 3; i > 0; i--) {
+			countDownText.text = i.ToString();    
+			yield return new WaitForSeconds(0.7f);
+		}
+        nextMenu();
+    }
+    
     // Update is called once per frame
     void Update() {
         if (gameState == StaticData.AvailableGameStates.Menu) {
@@ -198,9 +247,5 @@ public class MenuManager : MonoBehaviour {
             }
         }
         return buttonWasPressed;
-    }
-
-    void Close() {
-        menuPanel.SetActive(false);
     }
 }
