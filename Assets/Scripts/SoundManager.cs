@@ -12,7 +12,9 @@ public class SoundManager : MonoBehaviour {
     public AudioClip[] punchSounds;
 
     void Start () {
-        loadPunchSounds();
+        efxSource = GetComponent<AudioSource>();
+        musicSource = GetComponent<AudioSource>();
+        punchSounds = loadPunchSounds();
     }
 	
 	// Update is called once per frame
@@ -41,11 +43,12 @@ public class SoundManager : MonoBehaviour {
         return clips;
     }
 
-    public void playRandomPunchSound(params AudioClip[] clips) {
-        int randomIndex = Random.Range(0, clips.Length);
+    public void playRandomPunchSound() {
+
+        int randomIndex = Random.Range(0, punchSounds.Length);
 
         //Set the clip to the clip at our randomly chosen index.
-        efxSource.clip = clips[randomIndex];
+        efxSource.clip = punchSounds[randomIndex];
 
         //Play the clip.
         efxSource.Play();
