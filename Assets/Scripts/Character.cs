@@ -6,6 +6,7 @@ public class Character : MonoBehaviour {
 
 	// Variable du personnage
 	public int healthPoint;
+	public int id;
 
 	// Variable de mouvement
 	public Controller controller;
@@ -42,10 +43,9 @@ public class Character : MonoBehaviour {
         rightBox = this.transform.Find("Hit boxes").gameObject.transform.Find("Right box").gameObject.GetComponent<Collider2D>();
         bottomBox = this.transform.Find("Hit boxes").gameObject.transform.Find("Bottom box").gameObject.GetComponent<Collider2D>();
         
-		controller = new Controller("C2");
+		controller = new Controller("C" + id);
 		isJumping = false;
 		rigidBody2D = this.GetComponent<Rigidbody2D>();
-        
 	}
 	
 	// Update is called once per frame
@@ -54,7 +54,7 @@ public class Character : MonoBehaviour {
 		xSpeed = Input.GetAxis(controller.lHorizontal) * movementForceHorizontal;
         // Vertical movement # jump
 		if (Input.GetButtonDown(controller.buttonB) && !isJumping) {
-            isJumping = true;
+            setIsJumping(true);
 			rigidBody2D.AddForce(transform.up * movementForceVertical, ForceMode2D.Impulse);
 		}
 
@@ -64,9 +64,57 @@ public class Character : MonoBehaviour {
 		} else {
 			rigidBody2D.AddForce(tempVect * Time.fixedDeltaTime, ForceMode2D.Impulse);	
 		}
+
+		// Attaque 'A'
+		if (Input.GetButtonDown(controller.buttonA)) {
+			float xAxis = Input.GetAxis(controller.lHorizontal);
+			float yAxis = Input.GetAxis(controller.lVertical);
+			Collider2D[] collisions = new Collider2D[100];
+			string direction;
+			if (Mathf.Abs(xAxis) >= Mathf.Abs(yAxis)) {
+				if (xAxis >= 0) {
+					rightBox.OverlapCollider(new ContactFilter2D(), collisions);
+					direction = "right";
+				} else {
+					leftBox.OverlapCollider(new ContactFilter2D(), collisions);
+					direction = "left";
+				}
+			} else {
+				if (yAxis >= 0) {
+					topBox.OverlapCollider(new ContactFilter2D(), collisions);
+					direction = "top";
+				} else {
+					bottomBox.OverlapCollider(new ContactFilter2D(), collisions);
+					direction = "bottom";
+				}	
+			}
+			handleCollisions(collisions, direction);
+		}
+	}
+
+	private void handleCollisions(Collider2D[] collisions, string direction) {
+		List<int> collided = new List<int>();
+		foreach (Collider2D item in collisions) {
+			if (item.tag != "CharCollider") {
+				continue;
+			}
+			GameObject characterObject = item.transform.parent.gameObject.transform.parent.gameObject;
+			Debug.Log(characterObject.ToString());
+			Character character = characterObject.GetComponent<Character>();
+			if (this.id != character.id && !collided.Contains(character.id)) {
+				collided.Add(character.id);
+				character.GetComponent<Character>().receiveDamage(10, direction);
+			}
+		}
 	}
     
     public void setIsJumping(bool val) {
         isJumping = val;
+    }
+
+    public void receiveDamage(int damage, string direction) {
+    	this.healthPoint -= damage;
+    	Debug.Log(id + " lost : " + damage + " health.");
+    	// Knock in direction
     }
 }
