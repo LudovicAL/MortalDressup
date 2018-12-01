@@ -69,7 +69,7 @@ public class Character : MonoBehaviour {
 		if (Input.GetButtonDown(controller.buttonA)) {
 			float xAxis = Input.GetAxis(controller.lHorizontal);
 			float yAxis = Input.GetAxis(controller.lVertical);
-			Collider2D[] collisions = new Collider2D[100];
+			Collider2D[] collisions = new Collider2D[20];
 			string direction;
 			if (Mathf.Abs(xAxis) >= Mathf.Abs(yAxis)) {
 				if (xAxis >= 0) {
@@ -95,11 +95,13 @@ public class Character : MonoBehaviour {
 	private void handleCollisions(Collider2D[] collisions, string direction) {
 		List<int> collided = new List<int>();
 		foreach (Collider2D item in collisions) {
+            if (item == null) {
+				break;
+			}
 			if (item.tag != "CharCollider") {
 				continue;
 			}
 			GameObject characterObject = item.transform.parent.gameObject.transform.parent.gameObject;
-			Debug.Log(characterObject.ToString());
 			Character character = characterObject.GetComponent<Character>();
 			if (this.id != character.id && !collided.Contains(character.id)) {
 				collided.Add(character.id);
