@@ -40,18 +40,20 @@ public class PlayersManager : MonoBehaviour {
 	}
 
 	void Update () {
-		foreach (Controller controller in listOfAvailableContollers) {
-			if (Input.GetButtonDown(controller.buttonA)) {
-				AddPlayer (controller);
-				break;
-			}
-		}
-		foreach (Player player in listOfPlayers) {
-			if (Input.GetButtonDown(player.controller.buttonB)) {
-				RemovePlayer (player);
-				break;
-			}
-		}
+        if(MenuManager.currentMenu == MenuManager.menuPanels.JOIN) {
+            foreach (Controller controller in listOfAvailableContollers) {
+                if (Input.GetButtonDown(controller.buttonA)) {
+                    AddPlayer(controller);
+                    break;
+                }
+            }
+            foreach (Player player in listOfPlayers) {
+                if (Input.GetButtonDown(player.controller.buttonB)) {
+                    RemovePlayer(player);
+                    break;
+                }
+            }
+        }
 	}
 
 	//Adds a player to the game

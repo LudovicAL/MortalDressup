@@ -16,7 +16,7 @@ public class MenuManager : MonoBehaviour {
     private GameStatesManager gameStatesManager;
     private StaticData.AvailableGameStates gameState;
 
-    enum menuPanels {
+    public enum menuPanels {
         JOIN,
         START,
         CHOOSE,
@@ -30,7 +30,7 @@ public class MenuManager : MonoBehaviour {
     GameObject choosePlayerPanel;
     GameObject dressupPanel;
 
-    menuPanels currentMenu;
+    public static menuPanels currentMenu;
 
     // Use this for initialization
     void Start() {
@@ -47,6 +47,7 @@ public class MenuManager : MonoBehaviour {
         startPanel = getMenuObject(menuPanel, strStart);
         choosePlayerPanel = getMenuObject(menuPanel, strChoosePlayer);
         dressupPanel = getMenuObject(menuPanel, strDressup);
+        onFirstMenu();
     }
 
     public void onFirstMenu() {
@@ -80,7 +81,6 @@ public class MenuManager : MonoBehaviour {
     public void previousMenu() {
         switch (currentMenu) {
             case menuPanels.JOIN:
-                showMenuPanel(menuPanels.JOIN);
                 break;
             case menuPanels.START:
                 showMenuPanel(menuPanels.JOIN);
@@ -96,6 +96,9 @@ public class MenuManager : MonoBehaviour {
     }
 
     void showMenuPanel(menuPanels panel) {
+
+        currentMenu = panel;
+
         switch (panel) {
             case menuPanels.JOIN:
                 joinPanel.SetActive(true);
@@ -131,10 +134,10 @@ public class MenuManager : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         if (gameState == StaticData.AvailableGameStates.Menu) {
-            if (button_A_WasPressed()) {
+            if (buttonNextWasPressed()) {
                 nextMenu();
             }
-            if (button_B_WasPressed()) {
+            if (buttonBackWasPressed()) {
                 previousMenu();
             }
         }
@@ -173,22 +176,24 @@ public class MenuManager : MonoBehaviour {
     }
 
     int nbOfControllerMax = 4;
+    string[] buttonsStart = { "C1buttonStart", "C2buttonStart", "C3buttonStart", "C4buttonStart" };
+    string[] buttonsBack = { "C1buttonBack", "C2buttonBack", "C3buttonBack", "C4buttonBack" };
     string[] buttonsA = { "C1buttonA", "C2buttonA", "C3buttonA", "C4buttonA" };
     string[] buttonsB = { "C1buttonB", "C2buttonB", "C3buttonB", "C4buttonB" };
 
 
-    bool button_A_WasPressed() {
-        return checkIfButtonWasPressed(buttonsA);
+    bool buttonNextWasPressed() {
+        return checkIfButtonWasPressed(buttonsStart);
     }
 
-    bool button_B_WasPressed() {
-        return checkIfButtonWasPressed(buttonsB);
+    bool buttonBackWasPressed() {
+        return checkIfButtonWasPressed(buttonsBack);
     }
 
     bool checkIfButtonWasPressed(string[] buttons) {
         bool buttonWasPressed = false;
         for (int i = 0; i < nbOfControllerMax; i++) {
-            if (Input.GetButton(buttons[i]) && !buttonWasPressed) {
+            if (Input.GetButtonDown(buttons[i]) && !buttonWasPressed) {
                 buttonWasPressed = true;
             }
         }
