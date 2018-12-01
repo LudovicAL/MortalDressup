@@ -7,9 +7,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class PlayersManager : MonoBehaviour {
 
+    public GameObject characterPrefab;
 	public GameObject panelPlayerJoinedPrefab;
 	public GameObject panelPlayerList;
 	public GameObject panelJoinGameInvite;
@@ -62,13 +64,21 @@ public class PlayersManager : MonoBehaviour {
 			GameObject panelPlayerJoined = GameObject.Instantiate(panelPlayerJoinedPrefab, panelPlayerList.transform);
 			panelPlayerJoined.GetComponent<RectTransform> ().localScale = Vector3.one;
 			panelPlayerJoined.transform.Find ("Text").GetComponent<Text>().text = "Player " + listOfAvailableIds[0].ToString() + " joined the game!";
-			listOfPlayers.Add (new Player (listOfAvailableIds[0], controller, panelPlayerJoined));
+            Player newPlayer = new Player (listOfAvailableIds[0], controller, panelPlayerJoined);
+			listOfPlayers.Add (newPlayer);
 			listOfAvailableIds.RemoveAt(0);
 			listOfAvailableContollers.Remove (controller);
 			if (listOfAvailableIds.Count == 0) {
 				panelJoinGameInvite.SetActive(false);
 			}
 			Canvas.ForceUpdateCanvases ();
+            GameObject characterGO = (GameObject) Instantiate(characterPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+            newPlayer.characterGO = characterGO;
+            try {
+                characterGO.GetComponent<Character>().id = Int32.Parse(newPlayer.controller.name.Substring(1));
+            } catch (FormatException e) {
+                Console.WriteLine(e.Message);
+            }
 		}
 	}
 
@@ -78,6 +88,7 @@ public class PlayersManager : MonoBehaviour {
 		listOfAvailableIds.Add (player.id);
 		listOfAvailableIds.Sort ();
 		Destroy (player.panelPlayerJoined);
+        Destroy (player.characterGO);
 		listOfPlayers.Remove (player);
 		panelJoinGameInvite.SetActive(true);
 	}
