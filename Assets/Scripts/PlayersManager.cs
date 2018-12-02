@@ -11,6 +11,8 @@ using System;
 
 public class PlayersManager : MonoBehaviour {
 
+    private GameStatesManager gameStatesManager;	//Refers to the GameStateManager
+	private StaticData.AvailableGameStates gameState;	//Mimics the GameStateManager's gameState variable at all time
     public float spawnDistance;
     public GameObject characterPrefab;
 	public GameObject panelPlayerJoinedPrefab;
@@ -26,6 +28,14 @@ public class PlayersManager : MonoBehaviour {
     private GameWatcher gameWatcher;
     
 	void Start () {
+        gameStatesManager = GameObject.Find ("ScriptBucket").GetComponent<GameStatesManager>();
+		gameStatesManager.MenuGameState.AddListener(OnMenu);
+		gameStatesManager.StartingGameState.AddListener(OnStarting);
+		gameStatesManager.PlayingGameState.AddListener(OnPlaying);
+		gameStatesManager.PausedGameState.AddListener(OnPausing);
+        gameStatesManager.EndingGameState.AddListener(OnEnding);
+		SetState (gameStatesManager.gameState);
+        
 		listOfAvailableIds = new List<int> ();
 		for (int id = 1, max = Mathf.Min(maxNumPlayers, 11); id <= max; id++) {
 			listOfAvailableIds.Add (id);
@@ -99,14 +109,9 @@ public class PlayersManager : MonoBehaviour {
 	}
 
 	private void reset() {
-		foreach (Player curPlayer in listOfPlayers) {
-			RemovePlayer(curPlayer);
+        while (listOfPlayers.Count > 0) {
+			RemovePlayer(listOfPlayers[0]);
 		}
-	}
-
-	public void resetGame() {
-		reset();
-		// reset all character and shizzle
 	}
 
 	//Removes a player from the game
@@ -119,5 +124,38 @@ public class PlayersManager : MonoBehaviour {
         Destroy (player.healthBarGO);
 		listOfPlayers.Remove (player);
 		panelJoinGameInvite.SetActive(true);
+	}
+    
+    //Listener functions a defined for every GameState
+	protected void OnMenu() {
+		SetState (StaticData.AvailableGameStates.Menu);
+	}
+
+	protected void OnStarting() {
+		SetState (StaticData.AvailableGameStates.Starting);
+
+	}
+
+	protected void OnPlaying() {
+		SetState (StaticData.AvailableGameStates.Playing);
+
+	}
+
+	protected void OnPausing() {
+		SetState (StaticData.AvailableGameStates.Paused);
+	}
+    
+    protected void OnEnding() {
+		SetState (StaticData.AvailableGameStates.Ending);
+        reset();
+	}
+
+	private void SetState(StaticData.AvailableGameStates state) {
+		gameState = state;
+	}
+
+	//Use this function to request a game state change from the GameStateManager
+	private void RequestGameStateChange(StaticData.AvailableGameStates state) {
+		gameStatesManager.ChangeGameState (state);
 	}
 }
