@@ -586,7 +586,7 @@ MonoBehaviour:
   healthPoint: 100
   id: 1
   movementForceHorizontal: 15
-  movementForceVertical: 3
+  movementForceVertical: 7
   maxSpeed: 50
 --- !u!212 &212769303588346130
 SpriteRenderer:

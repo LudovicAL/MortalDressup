@@ -12,6 +12,8 @@ public class GameWatcher : MonoBehaviour {
     
 	// Use this for initialization
 	void Start () {
+        listOfAlivePlayers = new List<GameObject>();
+        listOfDeadPlayers = new List<GameObject>();
         gameStatesManager = GameObject.Find ("ScriptBucket").GetComponent<GameStatesManager>();
 		gameStatesManager.MenuGameState.AddListener(OnMenu);
 		gameStatesManager.StartingGameState.AddListener(OnStarting);
