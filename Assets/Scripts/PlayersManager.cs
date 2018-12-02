@@ -15,6 +15,8 @@ public class PlayersManager : MonoBehaviour {
 	public GameObject panelPlayerJoinedPrefab;
 	public GameObject panelPlayerList;
 	public GameObject panelJoinGameInvite;
+	public GameObject healthBarPrefab;
+	public GameObject gamePanel;
 	public int maxNumPlayers;	//Maximum is 11
 	public List<Player> listOfPlayers {get; private set;}
 	private List<Controller> listOfAvailableContollers;
@@ -77,6 +79,12 @@ public class PlayersManager : MonoBehaviour {
             GameObject characterGO = (GameObject) Instantiate(characterPrefab, new Vector3(0, 0, 0), Quaternion.identity);
             newPlayer.characterGO = characterGO;
             characterGO.GetComponent<SpriteRenderer>().sprite = srm.getRandomCharacter();
+
+            GameObject healthBarGO = (GameObject) Instantiate(healthBarPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+            gamePanel.SetActive(true);
+            healthBarGO.transform.parent = gamePanel.transform;
+            healthBarGO.GetComponent<Healthbar>().character = characterGO.GetComponent<Character>();
+            gamePanel.SetActive(false);
             try {
                 characterGO.GetComponent<Character>().id = Int32.Parse(newPlayer.controller.name.Substring(1));
             } catch (FormatException e) {

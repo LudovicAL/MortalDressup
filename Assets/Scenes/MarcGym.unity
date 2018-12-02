@@ -113,6 +113,33 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &186351019 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1090443114595070, guid: 6913cd3f15bcabe48a098de553d043e0,
+    type: 2}
+  m_PrefabInternal: {fileID: 329745963}
+--- !u!114 &186351022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 186351019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -405508275, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 1
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
 --- !u!1001 &329745963
 Prefab:
   m_ObjectHideFlags: 0
@@ -221,6 +248,51 @@ Prefab:
       value: 
       objectReference: {fileID: 1660692790365612, guid: a58fc83d619753f46bb60f12277ff07f,
         type: 2}
+    - target: {fileID: 224304810748499458, guid: 6913cd3f15bcabe48a098de553d043e0,
+        type: 2}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224304810748499458, guid: 6913cd3f15bcabe48a098de553d043e0,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224304810748499458, guid: 6913cd3f15bcabe48a098de553d043e0,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224304810748499458, guid: 6913cd3f15bcabe48a098de553d043e0,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224304810748499458, guid: 6913cd3f15bcabe48a098de553d043e0,
+        type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224304810748499458, guid: 6913cd3f15bcabe48a098de553d043e0,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1090443114595070, guid: 6913cd3f15bcabe48a098de553d043e0, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114632591786855554, guid: 6913cd3f15bcabe48a098de553d043e0,
+        type: 2}
+      propertyPath: healthBarPrefab
+      value: 
+      objectReference: {fileID: 1325879393994256, guid: d4fbce4cb5ac39248a0405836a65bc18,
+        type: 2}
+    - target: {fileID: 114632591786855554, guid: 6913cd3f15bcabe48a098de553d043e0,
+        type: 2}
+      propertyPath: gamePanel
+      value: 
+      objectReference: {fileID: 186351019}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6913cd3f15bcabe48a098de553d043e0, type: 2}
   m_IsPrefabAsset: 0
