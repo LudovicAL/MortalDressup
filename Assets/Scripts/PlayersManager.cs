@@ -85,6 +85,15 @@ public class PlayersManager : MonoBehaviour {
 		}
 	}
 
+	private void reset() {
+		listOfPlayers = new List<Player>();
+	}
+
+	public void resetGame() {
+		reset();
+		// reset all character and shizzle
+	}
+
 	//Removes a player from the game
 	private void RemovePlayer(Player player) {
 		listOfAvailableContollers.Add (player.controller);
