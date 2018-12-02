@@ -38,6 +38,9 @@ public class SoundManager : MonoBehaviour {
         efxSource = GetComponent<AudioSource>();
         musicSource = GetComponent<AudioSource>();
         punchSounds = loadPunchSounds();
+        //fightSound = Resources.Load<AudioClip>("Audio/Fight Sound Effect - Free Download (320  kbps)");
+        //fatalitySound = Resources.Load<AudioClip>("Audio/Fatality! - Sound Effect [Mortal Kombat] (320  kbps)");
+        themeSound = Resources.Load<AudioClip>("Mortal Kombat Theme Song Original (320  kbps)");
     }
 	
 	// Update is called once per frame
@@ -64,12 +67,6 @@ public class SoundManager : MonoBehaviour {
         clips[11] = Resources.Load<AudioClip>("Audio/Hadouken Sound effect (320  kbps)");
 
         return clips;
-    }
-
-    void loadOtherSounds() {
-        fightSound = Resources.Load<AudioClip>("Audio/Fight Sound Effect - Free Download (320  kbps)");
-        fatalitySound = Resources.Load<AudioClip>("Audio/Fatality! - Sound Effect [Mortal Kombat] (320  kbps)");
-        themeSound = Resources.Load<AudioClip>("Mortal Kombat Theme Song Original (320  kbps)");
     }
 
     void Awake() {

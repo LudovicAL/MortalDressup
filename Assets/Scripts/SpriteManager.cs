@@ -37,8 +37,6 @@ public class SpriteManager : MonoBehaviour
     public void loadCharacters()
     {
         characters = Resources.LoadAll("Sprites/Characters");
-
-        this.characters = characters;
     }
 
     public Sprite getRandomCharacter()

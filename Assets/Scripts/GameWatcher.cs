@@ -39,6 +39,7 @@ public class GameWatcher : MonoBehaviour {
 	}
 
     void checkForGameEnd() {
+        Debug.Log("Check for game end: " + listOfAlivePlayers.Count); 
         if (listOfAlivePlayers.Count < 2){
             Debug.Log("Game ended");
             StartCoroutine(goToNextGameState());

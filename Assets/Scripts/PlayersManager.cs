@@ -59,17 +59,19 @@ public class PlayersManager : MonoBehaviour {
 	}
 
 	void Update () {
-        if(MenuManager.currentMenu == MenuManager.menuPanels.JOIN) {
-            foreach (Controller controller in listOfAvailableContollers) {
-                if (Input.GetButtonDown(controller.buttonA)) {
-                    AddPlayer(controller);
-                    break;
+        if (gameState == StaticData.AvailableGameStates.Menu) {
+            if(MenuManager.currentMenu == MenuManager.menuPanels.JOIN) {
+                foreach (Controller controller in listOfAvailableContollers) {
+                    if (Input.GetButtonDown(controller.buttonA)) {
+                        AddPlayer(controller);
+                        break;
+                    }
                 }
-            }
-            foreach (Player player in listOfPlayers) {
-                if (Input.GetButtonDown(player.controller.buttonB)) {
-                    RemovePlayer(player);
-                    break;
+                foreach (Player player in listOfPlayers) {
+                    if (Input.GetButtonDown(player.controller.buttonB)) {
+                        RemovePlayer(player);
+                        break;
+                    }
                 }
             }
         }

@@ -16,7 +16,8 @@ public class MenuManager : MonoBehaviour {
     readonly string strScriptBucket = "ScriptBucket";
     readonly string strCountDownText = "CountDownText";
     readonly string strEndingText = "EndingText";
-
+    readonly int nbControllerMax = 11;
+    
     private GameStatesManager gameStatesManager;
     private StaticData.AvailableGameStates gameState;
     private GameWatcher gameWatcher;
@@ -98,6 +99,7 @@ public class MenuManager : MonoBehaviour {
     public void previousMenu() {
         switch (currentMenu) {
             case menuPanels.JOIN:
+                Application.Quit();
                 break;
             case menuPanels.START:
                 showMenuPanel(menuPanels.JOIN);
@@ -210,14 +212,15 @@ public class MenuManager : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         if (gameState == StaticData.AvailableGameStates.Menu) {
-            if (buttonNextWasPressed()) {
-                nextMenu();
-            }
-            if (buttonBackWasPressed()) {
-                previousMenu();
+            for (int i = 1; i <= nbControllerMax; i++) {
+                if (Input.GetButtonDown("C" + i + "buttonStart")) {
+                    nextMenu();
+                }
+                if (Input.GetButtonDown("C" + i + "buttonBack")) {
+                    previousMenu();
+                }
             }
         }
-            
     }
 
     //Listener functions a defined for every GameState
@@ -242,6 +245,8 @@ public class MenuManager : MonoBehaviour {
         nextMenu();
         if (gameWatcher.listOfAlivePlayers.Count > 0) {
             endingText.text = gameWatcher.listOfAlivePlayers[0].ToString() + " won... obviously";
+            gameWatcher.listOfAlivePlayers = new List<GameObject>();
+            gameWatcher.listOfDeadPlayers = new List<GameObject>();
         } else {
             endingText.text = "No constest bro!";
         }
@@ -261,30 +266,5 @@ public class MenuManager : MonoBehaviour {
         yield return new WaitForSeconds(3.0f);
         RequestGameStateChange(StaticData.AvailableGameStates.Menu);
         nextMenu();
-    }
-    
-    int nbOfControllerMax = 4;
-    string[] buttonsStart = { "C1buttonStart", "C2buttonStart", "C3buttonStart", "C4buttonStart" };
-    string[] buttonsBack = { "C1buttonBack", "C2buttonBack", "C3buttonBack", "C4buttonBack" };
-    string[] buttonsA = { "C1buttonA", "C2buttonA", "C3buttonA", "C4buttonA" };
-    string[] buttonsB = { "C1buttonB", "C2buttonB", "C3buttonB", "C4buttonB" };
-
-
-    bool buttonNextWasPressed() {
-        return checkIfButtonWasPressed(buttonsStart);
-    }
-
-    bool buttonBackWasPressed() {
-        return checkIfButtonWasPressed(buttonsBack);
-    }
-
-    bool checkIfButtonWasPressed(string[] buttons) {
-        bool buttonWasPressed = false;
-        for (int i = 0; i < nbOfControllerMax; i++) {
-            if (Input.GetButtonDown(buttons[i]) && !buttonWasPressed) {
-                buttonWasPressed = true;
-            }
-        }
-        return buttonWasPressed;
     }
 }
