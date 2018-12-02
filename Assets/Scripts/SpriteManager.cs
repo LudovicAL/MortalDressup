@@ -5,8 +5,7 @@ using UnityEngine.UI;
 
 public class SpriteManager : MonoBehaviour
 {
-    public static SpriteManager instance = null;     //Allows other scripts to call functions from SpriteManager.
-    public Sprite spriteSource;                       //Drag a reference to the sprite source which will display the sprite
+    public static SpriteManager instance = null;     //Allows other scripts to call functions from SpriteManager.                    //Drag a reference to the sprite source which will display the sprite
     public Sprite[] sprites;
 
 
@@ -21,26 +20,33 @@ public class SpriteManager : MonoBehaviour
 
     }
 
-    public Sprite[] loadSprites()
+    public void loadSprites()
     {
-
         Sprite[] sprites = new Sprite[4];
-        //Load an Sprite (Assets/Resources/Sprites/sprite01.png)
 
         sprites[0] = Resources.Load<Sprite>("Sprites/BAM");
         sprites[1] = Resources.Load<Sprite>("Sprites/BOOM");
         sprites[2] = Resources.Load<Sprite>("Sprites/POW");
-        sprites[3] = Resources.Load<Sprite>("Sprites/WHAM");
-        
-        return sprites;
+        sprites[3] = Resources.Load<Sprite>("Sprites/WHAM");  
+
+        this.sprites = sprites;
     }
 
-    public void displayRandomSprite(params Sprite[] sprites)
+    public Sprite getRandomFightingSprite()
     {
         int randomIndex = Random.Range(0, sprites.Length);
-
+        Debug.Log(sprites.Length);
+        Debug.Log("Random" + randomIndex);
         //Set the sprite to the sprite at our randomly chosen index.
-        spriteSource = sprites[randomIndex];
+        return sprites[randomIndex];
+    }
+
+    public void drawRandomFightingSprite(float x, float y) 
+    {
+        GameObject go = new GameObject();
+        go.name = "PunchSprite";
+        SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
+        sr.sprite = getRandomFightingSprite();
     }
 
     void Awake()
