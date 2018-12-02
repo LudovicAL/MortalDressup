@@ -47,6 +47,7 @@ public class MenuManager : MonoBehaviour {
         gameStatesManager.StartingGameState.AddListener(OnStarting);
         gameStatesManager.PlayingGameState.AddListener(OnPlaying);
         gameStatesManager.PausedGameState.AddListener(OnPausing);
+        gameStatesManager.PausedGameState.AddListener(OnEnding);
         SetState(gameStatesManager.gameState);
 
         menuPanel = this.gameObject.transform.Find(strMenuPanel).gameObject;
@@ -213,6 +214,10 @@ public class MenuManager : MonoBehaviour {
 
     protected void OnPausing() {
         SetState(StaticData.AvailableGameStates.Paused);
+    }
+    
+    protected void OnEnding() {
+        SetState(StaticData.AvailableGameStates.Ending);
     }
 
     private void SetState(StaticData.AvailableGameStates state) {
