@@ -160,9 +160,9 @@ public class Character : MonoBehaviour {
             if (this.healthPoint <= 0) {
             	rigidBody2D.constraints = RigidbodyConstraints2D.None;
                 if (direction == "right") {
-                    rigidBody2D.AddTorque(50, ForceMode2D.Impulse);
+                    rigidBody2D.AddTorque(20, ForceMode2D.Impulse);
                 } else {
-                    rigidBody2D.AddTorque(-50, ForceMode2D.Impulse);
+                    rigidBody2D.AddTorque(-20, ForceMode2D.Impulse);
                 }
                 alive = false;
                 gameWatcher.killPlayer(this.gameObject);
