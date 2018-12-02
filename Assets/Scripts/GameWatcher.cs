@@ -27,7 +27,7 @@ public class GameWatcher : MonoBehaviour {
 	}
     
     public void addPlayer(GameObject newGo) {
-        listOfDeadPlayers.Add(newGo);
+        listOfAlivePlayers.Add(newGo);
     }
     
     public void killPlayer(GameObject deadGO) {
