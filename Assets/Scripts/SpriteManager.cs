@@ -5,14 +5,15 @@ using UnityEngine.UI;
 
 public class SpriteManager : MonoBehaviour
 {
-    public static SpriteManager instance = null;     //Allows other scripts to call functions from SpriteManager.
-    public Sprite spriteSource;                       //Drag a reference to the sprite source which will display the sprite
+    public static SpriteManager instance = null;     //Allows other scripts to call functions from SpriteManager.                    //Drag a reference to the sprite source which will display the sprite
     public Sprite[] sprites;
+    public Object[] characters;
 
 
     void Start()
     {
         loadSprites();
+        loadCharacters();
     }
 
     // Update is called once per frame
@@ -21,26 +22,46 @@ public class SpriteManager : MonoBehaviour
 
     }
 
-    public Sprite[] loadSprites()
+    public void loadSprites()
     {
-
         Sprite[] sprites = new Sprite[4];
-        //Load an Sprite (Assets/Resources/Sprites/sprite01.png)
 
         sprites[0] = Resources.Load<Sprite>("Sprites/BAM");
         sprites[1] = Resources.Load<Sprite>("Sprites/BOOM");
         sprites[2] = Resources.Load<Sprite>("Sprites/POW");
-        sprites[3] = Resources.Load<Sprite>("Sprites/WHAM");
-        
-        return sprites;
+        sprites[3] = Resources.Load<Sprite>("Sprites/WHAM");  
+
+        this.sprites = sprites;
     }
 
-    public void displayRandomSprite(params Sprite[] sprites)
+    public void loadCharacters()
+    {
+        characters = Resources.LoadAll("Sprites/Characters");
+
+        this.characters = characters;
+    }
+
+    public Sprite getRandomCharacter()
+    {
+        int randomIndex = Random.Range(0, characters.Length);
+        //Set the sprite to the sprite at our randomly chosen index.
+        return (Sprite) characters[randomIndex];
+    }
+
+    public Sprite getRandomFightingSprite()
     {
         int randomIndex = Random.Range(0, sprites.Length);
-
         //Set the sprite to the sprite at our randomly chosen index.
-        spriteSource = sprites[randomIndex];
+        return sprites[randomIndex];
+    }
+
+    public void drawRandomFightingSprite(float x, float y) 
+    {
+        GameObject go = new GameObject();
+        go.name = "PunchSprite";
+        SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
+        sr.transform.position = new Vector2(x, y);
+        sr.sprite = getRandomFightingSprite();
     }
 
     void Awake()
