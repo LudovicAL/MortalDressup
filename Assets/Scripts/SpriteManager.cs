@@ -35,8 +35,6 @@ public class SpriteManager : MonoBehaviour
     public Sprite getRandomFightingSprite()
     {
         int randomIndex = Random.Range(0, sprites.Length);
-        Debug.Log(sprites.Length);
-        Debug.Log("Random" + randomIndex);
         //Set the sprite to the sprite at our randomly chosen index.
         return sprites[randomIndex];
     }
@@ -46,6 +44,7 @@ public class SpriteManager : MonoBehaviour
         GameObject go = new GameObject();
         go.name = "PunchSprite";
         SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
+        sr.transform.position = new Vector2(x, y);
         sr.sprite = getRandomFightingSprite();
     }
 
