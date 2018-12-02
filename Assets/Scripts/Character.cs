@@ -158,17 +158,19 @@ public class Character : MonoBehaviour {
         if (alive) {
             this.healthPoint -= damage;
             if (this.healthPoint <= 0) {
+            	rigidBody2D.constraints = RigidbodyConstraints2D.None;
                 if (direction == "right") {
-                    rigidBody2D.AddTorque(2, ForceMode2D.Impulse);
+                    rigidBody2D.AddTorque(50, ForceMode2D.Impulse);
                 } else {
-                    rigidBody2D.AddTorque(-2, ForceMode2D.Impulse);
+                    rigidBody2D.AddTorque(-50, ForceMode2D.Impulse);
                 }
                 alive = false;
                 gameWatcher.killPlayer(this.gameObject);
             }
         }
     	// Knock in direction
-        rigidBody2D.AddForce(transform.right * 10, ForceMode2D.Impulse);
+    	int xDir = direction == "right" ? 1 : -1;
+        rigidBody2D.AddForce(transform.right * 5 * xDir, ForceMode2D.Impulse);
     }
     
     //Listener functions a defined for every GameState
