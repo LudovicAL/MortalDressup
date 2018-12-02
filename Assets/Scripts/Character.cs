@@ -33,6 +33,7 @@ public class Character : MonoBehaviour {
 
     SoundManager sm;
     SpriteManager srm;
+    float jumpTimer;
     
 	Character(Controller controller) {        
 	}
@@ -61,16 +62,27 @@ public class Character : MonoBehaviour {
 		rigidBody2D = this.GetComponent<Rigidbody2D>();
 		sm = GameObject.Find("ScriptBucket").GetComponent<SoundManager>();
 		srm = GameObject.Find("ScriptBucket").GetComponent<SpriteManager>();
+        
+        jumpTimer = 0.0f;
 	}
 	
 	// Update is called once per frame
 	void Update () {
         if (gameState == StaticData.AvailableGameStates.Playing) {
+            if (isJumping) {
+                if (jumpTimer > 0.0f) {
+                    jumpTimer -= 1.0f * Time.deltaTime;
+                }
+                if (jumpTimer <= 0.0f) {
+                    setIsJumping(false);
+                }
+            }
             // Horizontal movement
             xSpeed = Input.GetAxis(controller.lHorizontal) * movementForceHorizontal;
             // Vertical movement # jump
             if (Input.GetButtonDown(controller.buttonB) && !isJumping) {
                 setIsJumping(true);
+                jumpTimer = 3.0f;
                 rigidBody2D.AddForce(transform.up * movementForceVertical, ForceMode2D.Impulse);
             }
 
@@ -78,7 +90,7 @@ public class Character : MonoBehaviour {
             if (rigidBody2D.velocity.magnitude > maxSpeed) {
                 rigidBody2D.velocity = rigidBody2D.velocity.normalized * maxSpeed;
             } else {
-                rigidBody2D.AddForce(tempVect * Time.fixedDeltaTime, ForceMode2D.Impulse);	
+                rigidBody2D.AddForce(tempVect * Time.deltaTime, ForceMode2D.Impulse);	
             }
 
             // Attaque 'A'
