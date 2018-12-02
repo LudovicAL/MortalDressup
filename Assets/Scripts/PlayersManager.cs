@@ -83,7 +83,8 @@ public class PlayersManager : MonoBehaviour {
             GameObject healthBarGO = (GameObject) Instantiate(healthBarPrefab, new Vector3(0, 0, 0), Quaternion.identity);
             gamePanel.SetActive(true);
             healthBarGO.transform.parent = gamePanel.transform;
-            healthBarGO.GetComponent<Healthbar>().character = characterGO.GetComponent<Character>();
+            Healthbar hb = healthBarGO.transform.Find("Foreground").GetComponent<Healthbar>();
+            hb.character = characterGO.GetComponent<Character>();
             gamePanel.SetActive(false);
             try {
                 characterGO.GetComponent<Character>().id = Int32.Parse(newPlayer.controller.name.Substring(1));
