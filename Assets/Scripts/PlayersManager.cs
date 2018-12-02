@@ -24,12 +24,13 @@ public class PlayersManager : MonoBehaviour {
 	private List<int> listOfAvailableIds;
 	private SpriteManager srm;
     private GameWatcher gameWatcher;
-
+    
 	void Start () {
 		listOfAvailableIds = new List<int> ();
 		for (int id = 1, max = Mathf.Min(maxNumPlayers, 11); id <= max; id++) {
 			listOfAvailableIds.Add (id);
 		}
+        gameWatcher = GameObject.Find("ScriptBucket").GetComponent<GameWatcher>();
 		listOfPlayers = new List<Player> ();
 		listOfAvailableContollers = new List<Controller>() {
 			new Controller("C1"),	//Controller 1
@@ -45,7 +46,6 @@ public class PlayersManager : MonoBehaviour {
 			new Controller("C11")	//Controller 11
 		};
 		srm = GameObject.Find("ScriptBucket").GetComponent<SpriteManager>();
-        gameWatcher = this.gameObject.GetComponent<GameWatcher>();
 	}
 
 	void Update () {
@@ -89,6 +89,7 @@ public class PlayersManager : MonoBehaviour {
             gamePanel.SetActive(false);
             newPlayer.healthBarGO = healthBarGO;
             newPlayer.characterGO = characterGO;
+            Debug.Log(gameWatcher.ToString());
             gameWatcher.addPlayer(characterGO);
             try {
                 characterGO.GetComponent<Character>().id = Int32.Parse(newPlayer.controller.name.Substring(1));
