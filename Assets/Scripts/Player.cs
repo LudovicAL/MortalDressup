@@ -6,6 +6,7 @@ public class Player {
 	public int id {get; private set;}
 	public Controller controller {get; private set;}
     public GameObject characterGO;
+    public GameObject healthBarGO;
 
 	public Player(int id, Controller controller, GameObject panelPlayerJoined) {
 		this.id = id;

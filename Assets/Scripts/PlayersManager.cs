@@ -77,7 +77,6 @@ public class PlayersManager : MonoBehaviour {
 			}
 			Canvas.ForceUpdateCanvases ();
             GameObject characterGO = (GameObject) Instantiate(characterPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-            newPlayer.characterGO = characterGO;
             characterGO.GetComponent<SpriteRenderer>().sprite = srm.getRandomCharacter();
 
             GameObject healthBarGO = (GameObject) Instantiate(healthBarPrefab, new Vector3(0, 0, 0), Quaternion.identity);
@@ -86,6 +85,9 @@ public class PlayersManager : MonoBehaviour {
             Healthbar hb = healthBarGO.transform.Find("Foreground").GetComponent<Healthbar>();
             hb.character = characterGO.GetComponent<Character>();
             gamePanel.SetActive(false);
+
+            newPlayer.healthBarGO = healthBarGO;
+            newPlayer.characterGO = characterGO;
             try {
                 characterGO.GetComponent<Character>().id = Int32.Parse(newPlayer.controller.name.Substring(1));
             } catch (FormatException e) {
@@ -95,7 +97,9 @@ public class PlayersManager : MonoBehaviour {
 	}
 
 	private void reset() {
-		listOfPlayers = new List<Player>();
+		foreach (Player curPlayer in listOfPlayers) {
+			RemovePlayer(curPlayer);
+		}
 	}
 
 	public void resetGame() {
@@ -110,6 +114,7 @@ public class PlayersManager : MonoBehaviour {
 		listOfAvailableIds.Sort ();
 		Destroy (player.panelPlayerJoined);
         Destroy (player.characterGO);
+        Destroy (player.healthBarGO);
 		listOfPlayers.Remove (player);
 		panelJoinGameInvite.SetActive(true);
 	}
