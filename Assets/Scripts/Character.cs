@@ -27,6 +27,9 @@ public class Character : MonoBehaviour {
     Collider2D leftBox;
     Collider2D rightBox;
     Collider2D bottomBox;
+
+    SoundManager sm;
+    SpriteManager srm;
     
 	Character(Controller controller) {        
 	}
@@ -46,6 +49,8 @@ public class Character : MonoBehaviour {
 		controller = new Controller("C" + id);
 		isJumping = false;
 		rigidBody2D = this.GetComponent<Rigidbody2D>();
+		sm = GameObject.Find("ScriptBucket").GetComponent<SoundManager>();
+		srm = GameObject.Find("ScriptBucket").GetComponent<SpriteManager>();
 	}
 	
 	// Update is called once per frame
@@ -87,8 +92,10 @@ public class Character : MonoBehaviour {
 					bottomBox.OverlapCollider(new ContactFilter2D(), collisions);
 					direction = "bottom";
 				}	
+			}			
+			if (collisions[0] != null) {
+				handleCollisions(collisions, direction);
 			}
-			handleCollisions(collisions, direction);
 		}
 	}
 
@@ -106,6 +113,8 @@ public class Character : MonoBehaviour {
 			if (this.id != character.id && !collided.Contains(character.id)) {
 				collided.Add(character.id);
 				character.GetComponent<Character>().receiveDamage(10, direction);
+				sm.playRandomPunchSound();
+				srm.drawRandomFightingSprite(this.transform.position.x, this.transform.position.y);
 			}
 		}
 	}
@@ -116,7 +125,9 @@ public class Character : MonoBehaviour {
 
     public void receiveDamage(int damage, string direction) {
     	this.healthPoint -= damage;
-    	Debug.Log(id + " lost : " + damage + " health.");
+    	if (this.healthPoint <= 0) {
+    		// Death control
+    	} 
     	// Knock in direction
     }
 }
