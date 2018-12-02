@@ -156,7 +156,13 @@ public class Character : MonoBehaviour {
 
     public void receiveDamage(int damage, string direction) {
     	this.healthPoint -= damage;
+    	rigidBody2D.AddForce(transform.right * 10, ForceMode2D.Impulse);
     	if (this.healthPoint <= 0) {
+    		if (direction == "right") {
+    			rigidBody2D.AddTorque(2, ForceMode2D.Impulse);
+    		} else {
+    			rigidBody2D.AddTorque(-2, ForceMode2D.Impulse);
+    		}
     		alive = false;
             gameWatcher.killPlayer(this.gameObject);
     	} 
