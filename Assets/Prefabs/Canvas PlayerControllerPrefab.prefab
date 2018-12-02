@@ -1166,7 +1166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 011bd75f040b1dc4ebf62dca2e3890f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnDistance: 0
+  spawnDistance: 2
   characterPrefab: {fileID: 1660692790365612, guid: a58fc83d619753f46bb60f12277ff07f,
     type: 2}
   panelPlayerJoinedPrefab: {fileID: 1659016854983134, guid: c68d2cb7e9bceca49b247cc96d43f03a,
