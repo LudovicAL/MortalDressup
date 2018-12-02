@@ -132,7 +132,6 @@ GameObject:
   - component: {fileID: 4552087066918448}
   - component: {fileID: 212769303588346130}
   - component: {fileID: 50714272898093444}
-  - component: {fileID: 114941101277733546}
   - component: {fileID: 114581066713380556}
   m_Layer: 0
   m_Name: Character
@@ -589,17 +588,6 @@ MonoBehaviour:
   movementForceHorizontal: 15
   movementForceVertical: 3
   maxSpeed: 50
---- !u!114 &114941101277733546
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1660692790365612}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f37d6fdc1512b9c4796dd1f43a9dece4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!212 &212769303588346130
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -76,10 +76,9 @@ public class PlayersManager : MonoBehaviour {
 				panelJoinGameInvite.SetActive(false);
 			}
 			Canvas.ForceUpdateCanvases ();
-            GameObject characterGO = (GameObject) Instantiate(characterPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+            GameObject characterGO = Instantiate(characterPrefab);
             characterGO.GetComponent<SpriteRenderer>().sprite = srm.getRandomCharacter();
-
-            GameObject healthBarGO = (GameObject) Instantiate(healthBarPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+            GameObject healthBarGO = Instantiate(healthBarPrefab);
             gamePanel.SetActive(true);
             healthBarGO.transform.SetParent(gamePanel.transform);
             Healthbar hb = healthBarGO.transform.Find("Foreground").GetComponent<Healthbar>();
