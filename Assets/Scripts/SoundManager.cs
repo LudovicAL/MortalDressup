@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour {
 
+    private GameStatesManager gameStatesManager;	//Refers to the GameStateManager
+	private StaticData.AvailableGameStates gameState;	//Mimics the GameStateManager's gameState variable at all time
+
     public AudioSource efxSource;                   //Drag a reference to the audio source which will play the sound effects.
     public AudioSource musicSource;                 //Drag a reference to the audio source which will play the music.
     public static SoundManager instance = null;     //Allows other scripts to call functions from SoundManager.             
@@ -28,19 +31,30 @@ public class SoundManager : MonoBehaviour {
     }
 
     public void playThemeSong() {
-        musicSource.loop = true;
+        musicSource.loop = false;
         musicSource.clip = themeSound;
         musicSource.Play();
     }
+    
+    public void stopThemeSong() {
+        musicSource.Stop();
+    }
 
     void Start () {
-        Awake();
+        gameStatesManager = GameObject.Find("ScriptBucket").GetComponent<GameStatesManager>();
+        gameStatesManager.MenuGameState.AddListener(OnMenu);
+        gameStatesManager.StartingGameState.AddListener(OnStarting);
+        gameStatesManager.PlayingGameState.AddListener(OnPlaying);
+        gameStatesManager.PausedGameState.AddListener(OnPausing);
+        gameStatesManager.EndingGameState.AddListener(OnEnding);
+        SetState(gameStatesManager.gameState);
+        
         efxSource = GetComponent<AudioSource>();
         musicSource = GetComponent<AudioSource>();
         punchSounds = loadPunchSounds();
         //fightSound = Resources.Load<AudioClip>("Audio/Fight Sound Effect - Free Download (320  kbps)");
         //fatalitySound = Resources.Load<AudioClip>("Audio/Fatality! - Sound Effect [Mortal Kombat] (320  kbps)");
-        themeSound = Resources.Load<AudioClip>("Mortal Kombat Theme Song Original (320  kbps)");
+        //themeSound = Resources.Load<AudioClip>("MKThemeSong");
     }
 	
 	// Update is called once per frame
@@ -51,8 +65,6 @@ public class SoundManager : MonoBehaviour {
     AudioClip[] loadPunchSounds() {
 
         AudioClip[] clips = new AudioClip[12];
-        //Load an AudioClip (Assets/Resources/Audio/audioClip01.mp3)
-
         clips[0] = Resources.Load<AudioClip>("Audio/Punch1");
         clips[1] = Resources.Load<AudioClip>("Audio/punch2");
         clips[2] = Resources.Load<AudioClip>("Audio/punch3");
@@ -111,4 +123,37 @@ public class SoundManager : MonoBehaviour {
         //Play the clip.
         efxSource.Play();
     }
+    
+    //Listener functions a defined for every GameState
+	protected void OnMenu() {
+		SetState (StaticData.AvailableGameStates.Menu);
+	}
+
+	protected void OnStarting() {
+		SetState (StaticData.AvailableGameStates.Starting);
+
+	}
+
+	protected void OnPlaying() {
+		SetState (StaticData.AvailableGameStates.Playing);
+        playThemeSong();
+	}
+
+	protected void OnPausing() {
+		SetState (StaticData.AvailableGameStates.Paused);
+	}
+    
+    protected void OnEnding() {
+		SetState (StaticData.AvailableGameStates.Ending);
+        stopThemeSong();
+	}
+
+	private void SetState(StaticData.AvailableGameStates state) {
+		gameState = state;
+	}
+
+	//Use this function to request a game state change from the GameStateManager
+	private void RequestGameStateChange(StaticData.AvailableGameStates state) {
+		gameStatesManager.ChangeGameState (state);
+	}
 }

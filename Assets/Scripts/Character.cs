@@ -175,7 +175,6 @@ public class Character : MonoBehaviour {
 
 	protected void OnPlaying() {
 		SetState (StaticData.AvailableGameStates.Playing);
-
 	}
 
 	protected void OnPausing() {

@@ -73,7 +73,9 @@ public class MenuManager : MonoBehaviour {
     public void nextMenu() {
         switch (currentMenu) {
             case menuPanels.JOIN:
-                showMenuPanel(menuPanels.START);
+                if (gameWatcher.listOfAlivePlayers.Count > 1) {
+                    showMenuPanel(menuPanels.START);
+                }
                 break;
             case menuPanels.START:
                 showMenuPanel(menuPanels.CHOOSE);
@@ -185,7 +187,6 @@ public class MenuManager : MonoBehaviour {
                 endingPanel.SetActive(false);
                 break;
             case menuPanels.ENDING:
-                RequestGameStateChange(StaticData.AvailableGameStates.Playing);
                 joinPanel.SetActive(false);
                 startPanel.SetActive(false);
                 choosePlayerPanel.SetActive(false);
