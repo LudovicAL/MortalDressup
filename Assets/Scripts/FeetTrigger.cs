@@ -17,7 +17,6 @@ public class FeetTrigger : MonoBehaviour {
     
     void OnTriggerEnter2D(Collider2D col) {
         if (col.gameObject.tag == "Floor") {
-            Debug.Log("GameObject1 collided with " + col.name);
             character.setIsJumping(false);
         }
     }

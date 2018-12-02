@@ -19,6 +19,7 @@ public class PlayersManager : MonoBehaviour {
 	public List<Player> listOfPlayers {get; private set;}
 	private List<Controller> listOfAvailableContollers;
 	private List<int> listOfAvailableIds;
+	SpriteManager srm;
 
 	void Start () {
 		listOfAvailableIds = new List<int> ();
@@ -39,6 +40,7 @@ public class PlayersManager : MonoBehaviour {
 			new Controller("C10"),	//Controller 10
 			new Controller("C11")	//Controller 11
 		};
+		srm = GameObject.Find("ScriptBucket").GetComponent<SpriteManager>();
 	}
 
 	void Update () {
@@ -74,6 +76,7 @@ public class PlayersManager : MonoBehaviour {
 			Canvas.ForceUpdateCanvases ();
             GameObject characterGO = (GameObject) Instantiate(characterPrefab, new Vector3(0, 0, 0), Quaternion.identity);
             newPlayer.characterGO = characterGO;
+            characterGO.GetComponent<SpriteRenderer>().sprite = srm.getRandomCharacter();
             try {
                 characterGO.GetComponent<Character>().id = Int32.Parse(newPlayer.controller.name.Substring(1));
             } catch (FormatException e) {
