@@ -7,37 +7,45 @@ public class SoundManager : MonoBehaviour {
     private GameStatesManager gameStatesManager;	//Refers to the GameStateManager
 	private StaticData.AvailableGameStates gameState;	//Mimics the GameStateManager's gameState variable at all time
 
-    public AudioSource efxSource;                   //Drag a reference to the audio source which will play the sound effects.
-    public AudioSource musicSource;                 //Drag a reference to the audio source which will play the music.
+    public AudioSource audioSource1;                   //Drag a reference to the audio source which will play the sound effects.
+    public AudioSource audioSource2;                 //Drag a reference to the audio source which will play the music.
     public static SoundManager instance = null;     //Allows other scripts to call functions from SoundManager.             
     public float lowPitchRange = .95f;              //The lowest a sound effect will be randomly pitched.
     public float highPitchRange = 1.05f;            //The highest a sound effect will be randomly pitched.
     public AudioClip[] punchSounds;
-    public AudioClip fightSound;
-    public AudioClip fatalitySound;
-    public AudioClip themeSound;
+    public AudioClip themeSong;
+    public AudioClip buttonSound;
+    public AudioClip deathSound;
+    public AudioClip jumpSound;
 
     public void playRandomPunchSound() {
         int randomIndex = Random.Range(0, punchSounds.Length);
-        efxSource.PlayOneShot(punchSounds[randomIndex]);
+        audioSource2.PlayOneShot(punchSounds[randomIndex]);
     }
 
-    public void playFightSound() {
-        efxSource.PlayOneShot(fightSound);
+    public void playJumpSound() {
+        audioSource2.clip = jumpSound;
+        audioSource2.Play();
     }
-
-    public void playFatalitySound() {
-        efxSource.PlayOneShot(fatalitySound);
+    
+    public void playDeathSound() {
+        audioSource2.clip = deathSound;
+        audioSource2.Play();
     }
-
+    
+    public void playButtonSound() {
+        audioSource2.clip = buttonSound;
+        audioSource2.Play();
+    }
+    
     public void playThemeSong() {
-        musicSource.loop = false;
-        musicSource.clip = themeSound;
-        musicSource.Play();
+        audioSource1.loop = false;
+        audioSource1.clip = themeSong;
+        audioSource1.Play();
     }
     
     public void stopThemeSong() {
-        musicSource.Stop();
+        audioSource1.Stop();
     }
 
     void Start () {
@@ -49,12 +57,7 @@ public class SoundManager : MonoBehaviour {
         gameStatesManager.EndingGameState.AddListener(OnEnding);
         SetState(gameStatesManager.gameState);
         
-        efxSource = GetComponent<AudioSource>();
-        musicSource = GetComponent<AudioSource>();
         punchSounds = loadPunchSounds();
-        //fightSound = Resources.Load<AudioClip>("Audio/Fight Sound Effect - Free Download (320  kbps)");
-        //fatalitySound = Resources.Load<AudioClip>("Audio/Fatality! - Sound Effect [Mortal Kombat] (320  kbps)");
-        //themeSound = Resources.Load<AudioClip>("MKThemeSong");
     }
 	
 	// Update is called once per frame
@@ -90,19 +93,16 @@ public class SoundManager : MonoBehaviour {
         else if (instance != this)
             //Destroy this, this enforces our singleton pattern so there can only be one instance of SoundManager.
             Destroy(gameObject);
-
-        //Set SoundManager to DontDestroyOnLoad so that it won't be destroyed when reloading our scene.
-        DontDestroyOnLoad(gameObject);
     }
 
 
     //Used to play single sound clips.
     public void PlaySingle(AudioClip clip) {
         //Set the clip of our efxSource audio source to the clip passed in as a parameter.
-        efxSource.clip = clip;
+        audioSource2.clip = clip;
 
         //Play the clip.
-        efxSource.Play();
+        audioSource2.Play();
     }
 
 
@@ -115,13 +115,13 @@ public class SoundManager : MonoBehaviour {
         float randomPitch = Random.Range(lowPitchRange, highPitchRange);
 
         //Set the pitch of the audio source to the randomly chosen pitch.
-        efxSource.pitch = randomPitch;
+        audioSource2.pitch = randomPitch;
 
         //Set the clip to the clip at our randomly chosen index.
-        efxSource.clip = clips[randomIndex];
+        audioSource2.clip = clips[randomIndex];
 
         //Play the clip.
-        efxSource.Play();
+        audioSource2.Play();
     }
     
     //Listener functions a defined for every GameState

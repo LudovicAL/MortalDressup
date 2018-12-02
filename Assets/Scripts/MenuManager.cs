@@ -32,6 +32,7 @@ public class MenuManager : MonoBehaviour {
         ENDING
     }
 
+    SoundManager sm;
     GameObject menuPanel;
     GameObject joinPanel;
     GameObject startPanel;
@@ -55,7 +56,8 @@ public class MenuManager : MonoBehaviour {
         gameStatesManager.PausedGameState.AddListener(OnPausing);
         gameStatesManager.EndingGameState.AddListener(OnEnding);
         SetState(gameStatesManager.gameState);
-
+        
+        sm = GameObject.Find("ScriptBucket").GetComponent<SoundManager>();
         menuPanel = this.gameObject.transform.Find(strMenuPanel).gameObject;
         joinPanel = getMenuObject(strJoin);
         startPanel = getMenuObject(strStart);
@@ -125,7 +127,7 @@ public class MenuManager : MonoBehaviour {
     }
 
     void showMenuPanel(menuPanels panel) {
-
+        sm.playButtonSound();
         currentMenu = panel;
 
         switch (panel) {

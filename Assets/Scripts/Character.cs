@@ -79,6 +79,7 @@ public class Character : MonoBehaviour {
             // Vertical movement # jump
             if (Input.GetButtonDown(controller.buttonB) && !isJumping) {
                 setIsJumping(true);
+                sm.playJumpSound();
                 jumpTimer = 3.0f;
                 rigidBody2D.AddForce(transform.up * movementForceVertical, ForceMode2D.Impulse);
             }
@@ -156,6 +157,7 @@ public class Character : MonoBehaviour {
                 }
                 alive = false;
                 gameWatcher.killPlayer(this.gameObject);
+                sm.playDeathSound();
             }
         }
     	// Knock in direction

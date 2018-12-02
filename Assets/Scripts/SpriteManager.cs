@@ -73,7 +73,5 @@ public class SpriteManager : MonoBehaviour
         else if (instance != this)
             //Destroy this, this enforces our singleton pattern so there can only be one instance of SpriteManager.
             Destroy(gameObject);
-        //Set SpriteManager to DontDestroyOnLoad so that it won't be destroyed when reloading our scene.
-        DontDestroyOnLoad(gameObject);
     }
 }
