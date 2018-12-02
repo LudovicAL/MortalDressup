@@ -169,6 +169,11 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  EndingGameState:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &114227409560189000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -185,6 +190,9 @@ MonoBehaviour:
   lowPitchRange: 0.95
   highPitchRange: 1.05
   punchSounds: []
+  fightSound: {fileID: 0}
+  fatalitySound: {fileID: 0}
+  themeSound: {fileID: 0}
 --- !u!114 &114739952221512732
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -197,3 +205,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprites: []
+  characters: []

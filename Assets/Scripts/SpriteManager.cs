@@ -43,7 +43,7 @@ public class SpriteManager : MonoBehaviour
 
     public Sprite getRandomCharacter()
     {
-        int randomIndex = Random.Range(0, characters.Length);
+        int randomIndex = Random.Range(1, characters.Length - 1);
         //Set the sprite to the sprite at our randomly chosen index.
         return (Sprite) characters[randomIndex];
     }
@@ -62,6 +62,7 @@ public class SpriteManager : MonoBehaviour
         SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
         sr.transform.position = new Vector2(x, y);
         sr.sprite = getRandomFightingSprite();
+        Destroy(go, 0.5f);
     }
 
     void Awake()
