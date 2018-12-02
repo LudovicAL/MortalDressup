@@ -6,7 +6,8 @@ public class Character : MonoBehaviour {
 
     private GameStatesManager gameStatesManager;	//Refers to the GameStateManager
 	private StaticData.AvailableGameStates gameState;	//Mimics the GameStateManager's gameState variable at all time
-
+    private GameWatcher gameWatcher;
+    
 	// Variable du personnage
 	public int healthPoint;
 	public int id;
@@ -20,6 +21,7 @@ public class Character : MonoBehaviour {
 	private Rigidbody2D rigidBody2D;
     private bool isJumping;
     private float xSpeed;
+    private bool alive;
     
     Collider2D headCollider;
     Collider2D leftCollider;
@@ -45,6 +47,7 @@ public class Character : MonoBehaviour {
 		gameStatesManager.StartingGameState.AddListener(OnStarting);
 		gameStatesManager.PlayingGameState.AddListener(OnPlaying);
 		gameStatesManager.PausedGameState.AddListener(OnPausing);
+        gameStatesManager.PausedGameState.AddListener(OnEnding);
 		SetState (gameStatesManager.gameState);
         
         headCollider = this.transform.Find("Colliders").gameObject.transform.Find("Head collider").gameObject.GetComponent<Collider2D>();
@@ -63,12 +66,16 @@ public class Character : MonoBehaviour {
 		sm = GameObject.Find("ScriptBucket").GetComponent<SoundManager>();
 		srm = GameObject.Find("ScriptBucket").GetComponent<SpriteManager>();
         
+        gameWatcher = GameObject.Find("ScriptBucket").GetComponent<GameWatcher>();
+        
+        alive = true;
+        
         jumpTimer = 0.0f;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if (gameState == StaticData.AvailableGameStates.Playing) {
+        if (gameState == StaticData.AvailableGameStates.Playing && alive) {
             if (isJumping) {
                 if (jumpTimer > 0.0f) {
                     jumpTimer -= 1.0f * Time.deltaTime;
@@ -150,7 +157,8 @@ public class Character : MonoBehaviour {
     public void receiveDamage(int damage, string direction) {
     	this.healthPoint -= damage;
     	if (this.healthPoint <= 0) {
-    		// Death control
+    		alive = false;
+            gameWatcher.killPlayer(this.gameObject);
     	} 
     	// Knock in direction
     }
@@ -172,6 +180,10 @@ public class Character : MonoBehaviour {
 
 	protected void OnPausing() {
 		SetState (StaticData.AvailableGameStates.Paused);
+	}
+    
+    protected void OnEnding() {
+		SetState (StaticData.AvailableGameStates.Ending);
 	}
 
 	private void SetState(StaticData.AvailableGameStates state) {
