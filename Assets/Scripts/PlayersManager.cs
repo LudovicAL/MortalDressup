@@ -11,6 +11,7 @@ using System;
 
 public class PlayersManager : MonoBehaviour {
 
+    public float spawnDistance;
     public GameObject characterPrefab;
 	public GameObject panelPlayerJoinedPrefab;
 	public GameObject panelPlayerList;
@@ -78,7 +79,7 @@ public class PlayersManager : MonoBehaviour {
 				panelJoinGameInvite.SetActive(false);
 			}
 			Canvas.ForceUpdateCanvases ();
-            GameObject characterGO = Instantiate(characterPrefab, new Vector2(10.0f * newPlayer.id, 0.0f), Quaternion.identity);
+            GameObject characterGO = Instantiate(characterPrefab, new Vector2(spawnDistance * newPlayer.id, 0.0f), Quaternion.identity);
             characterGO.GetComponent<SpriteRenderer>().sprite = srm.getRandomCharacter();
             GameObject healthBarGO = Instantiate(healthBarPrefab);
             gamePanel.SetActive(true);

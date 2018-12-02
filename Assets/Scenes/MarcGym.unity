@@ -293,6 +293,11 @@ Prefab:
       propertyPath: gamePanel
       value: 
       objectReference: {fileID: 186351019}
+    - target: {fileID: 114632591786855554, guid: 6913cd3f15bcabe48a098de553d043e0,
+        type: 2}
+      propertyPath: spawnDistance
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6913cd3f15bcabe48a098de553d043e0, type: 2}
   m_IsPrefabAsset: 0
