@@ -7,8 +7,8 @@ public class GameWatcher : MonoBehaviour {
     private GameStatesManager gameStatesManager;	//Refers to the GameStateManager
 	private StaticData.AvailableGameStates gameState;	//Mimics the GameStateManager's gameState variable at all time
 
-    List<GameObject> listOfAlivePlayers;
-    List<GameObject> listOfDeadPlayers;
+    public List<GameObject> listOfAlivePlayers;
+    public List<GameObject> listOfDeadPlayers;
     
 	// Use this for initialization
 	void Start () {
@@ -40,11 +40,12 @@ public class GameWatcher : MonoBehaviour {
 
     void checkForGameEnd() {
         if (listOfAlivePlayers.Count < 2){
+            Debug.Log("Game ended");
             StartCoroutine(goToNextGameState());
         }
     }
     
-    private IEnumerator goToNextGameState() {   
+    private IEnumerator goToNextGameState() {
         yield return new WaitForSeconds(1.5f);
         RequestGameStateChange(StaticData.AvailableGameStates.Ending);
     }

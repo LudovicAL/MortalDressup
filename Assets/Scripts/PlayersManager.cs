@@ -89,7 +89,6 @@ public class PlayersManager : MonoBehaviour {
             gamePanel.SetActive(false);
             newPlayer.healthBarGO = healthBarGO;
             newPlayer.characterGO = characterGO;
-            Debug.Log(gameWatcher.ToString());
             gameWatcher.addPlayer(characterGO);
             try {
                 characterGO.GetComponent<Character>().id = Int32.Parse(newPlayer.controller.name.Substring(1));

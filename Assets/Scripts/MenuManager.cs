@@ -15,12 +15,12 @@ public class MenuManager : MonoBehaviour {
     readonly string strEnding = "EndingPanel";
     readonly string strScriptBucket = "ScriptBucket";
     readonly string strCountDownText = "CountDownText";
-
-    bool isFirstMenu;
+    readonly string strEndingText = "EndingText";
 
     private GameStatesManager gameStatesManager;
     private StaticData.AvailableGameStates gameState;
-
+    private GameWatcher gameWatcher;
+    
     public enum menuPanels {
         JOIN,
         START,
@@ -40,17 +40,19 @@ public class MenuManager : MonoBehaviour {
     GameObject gamePanel;
     GameObject endingPanel;
     Text countDownText;
+    Text endingText;
 
     public static menuPanels currentMenu;
 
     // Use this for initialization
     void Start() {
+        gameWatcher = GameObject.Find(strScriptBucket).GetComponent<GameWatcher>();
         gameStatesManager = GameObject.Find(strScriptBucket).GetComponent<GameStatesManager>();
         gameStatesManager.MenuGameState.AddListener(OnMenu);
         gameStatesManager.StartingGameState.AddListener(OnStarting);
         gameStatesManager.PlayingGameState.AddListener(OnPlaying);
         gameStatesManager.PausedGameState.AddListener(OnPausing);
-        gameStatesManager.PausedGameState.AddListener(OnEnding);
+        gameStatesManager.EndingGameState.AddListener(OnEnding);
         SetState(gameStatesManager.gameState);
 
         menuPanel = this.gameObject.transform.Find(strMenuPanel).gameObject;
@@ -62,16 +64,9 @@ public class MenuManager : MonoBehaviour {
         countDownText = countDownPanel.transform.Find(strCountDownText).gameObject.GetComponent<Text>();
         gamePanel = getMenuObject(strGame);
         endingPanel = getMenuObject(strEnding);
-        onFirstMenu();
-    }
-
-    public void onFirstMenu() {
-        isFirstMenu = false;
+        endingText = endingPanel.transform.Find(strEndingText).gameObject.GetComponent<Text>();
+        
         showMenuPanel(menuPanels.JOIN);
-    }
-
-    public void onEndGame() {
-        showMenuPanel(menuPanels.CHOOSE);
     }
 
     public void nextMenu() {
@@ -228,11 +223,6 @@ public class MenuManager : MonoBehaviour {
     //Listener functions a defined for every GameState
     protected void OnMenu() {
         SetState(StaticData.AvailableGameStates.Menu);
-        if(isFirstMenu) {
-            onFirstMenu();
-        } else {
-            onEndGame();
-        }
     }
 
     protected void OnStarting() {
@@ -250,7 +240,12 @@ public class MenuManager : MonoBehaviour {
     protected void OnEnding() {
         SetState(StaticData.AvailableGameStates.Ending);
         nextMenu();
-        goToNextGameState();
+        if (gameWatcher.listOfAlivePlayers.Count > 0) {
+            endingText.text = gameWatcher.listOfAlivePlayers[0].ToString() + " won... obviously";
+        } else {
+            endingText.text = "No constest bro!";
+        }
+        StartCoroutine(goToNextGameStateAfterWait());
     }
 
     private void SetState(StaticData.AvailableGameStates state) {
@@ -262,11 +257,10 @@ public class MenuManager : MonoBehaviour {
         gameStatesManager.ChangeGameState(state);
     }
 
-    private IEnumerator goToNextGameState() {   
+    private IEnumerator goToNextGameStateAfterWait() {
         yield return new WaitForSeconds(3.0f);
         RequestGameStateChange(StaticData.AvailableGameStates.Menu);
         nextMenu();
-        
     }
     
     int nbOfControllerMax = 4;
