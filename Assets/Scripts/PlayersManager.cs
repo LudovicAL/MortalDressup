@@ -44,7 +44,7 @@ public class PlayersManager : MonoBehaviour {
 			new Controller("C11")	//Controller 11
 		};
 		srm = GameObject.Find("ScriptBucket").GetComponent<SpriteManager>();
-        gameWatcher = this.gameObject.GetComponent<GameWatchet>();
+        gameWatcher = this.gameObject.GetComponent<GameWatcher>();
 	}
 
 	void Update () {
@@ -78,7 +78,7 @@ public class PlayersManager : MonoBehaviour {
 				panelJoinGameInvite.SetActive(false);
 			}
 			Canvas.ForceUpdateCanvases ();
-            GameObject characterGO = Instantiate(characterPrefab);
+            GameObject characterGO = Instantiate(characterPrefab, new Vector2(10.0f * newPlayer.id, 0.0f), Quaternion.identity);
             characterGO.GetComponent<SpriteRenderer>().sprite = srm.getRandomCharacter();
             GameObject healthBarGO = Instantiate(healthBarPrefab);
             gamePanel.SetActive(true);
