@@ -92,10 +92,10 @@ public class MenuManager : MonoBehaviour {
                 showMenuPanel(menuPanels.GAME);
                 break;
             case menuPanels.GAME:
-                //Do nothing here. We can't go forward during GAME
+                showMenuPanel(menuPanels.ENDING);
                 break;
             case menuPanels.ENDING:
-                //Do nothing here. We can't go forward during ENDING
+                showMenuPanel(menuPanels.JOIN);
                 break;
         }
     }
@@ -249,17 +249,26 @@ public class MenuManager : MonoBehaviour {
     
     protected void OnEnding() {
         SetState(StaticData.AvailableGameStates.Ending);
+        nextMenu();
+        goToNextGameState();
     }
 
     private void SetState(StaticData.AvailableGameStates state) {
         gameState = state;
     }
-
+    
     //Use this function to request a game state change from the GameStateManager
     private void RequestGameStateChange(StaticData.AvailableGameStates state) {
         gameStatesManager.ChangeGameState(state);
     }
 
+    private IEnumerator goToNextGameState() {   
+        yield return new WaitForSeconds(3.0f);
+        RequestGameStateChange(StaticData.AvailableGameStates.Menu);
+        nextMenu();
+        
+    }
+    
     int nbOfControllerMax = 4;
     string[] buttonsStart = { "C1buttonStart", "C2buttonStart", "C3buttonStart", "C4buttonStart" };
     string[] buttonsBack = { "C1buttonBack", "C2buttonBack", "C3buttonBack", "C4buttonBack" };

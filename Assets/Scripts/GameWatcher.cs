@@ -38,8 +38,13 @@ public class GameWatcher : MonoBehaviour {
 
     void checkForGameEnd() {
         if (listOfAlivePlayers.Count < 2){
-            RequestGameStateChange(StaticData.AvailableGameStates.Ending);
+            StartCoroutine(goToNextGameState());
         }
+    }
+    
+    private IEnumerator goToNextGameState() {   
+        yield return new WaitForSeconds(1.5f);
+        RequestGameStateChange(StaticData.AvailableGameStates.Ending);
     }
     
     //Listener functions a defined for every GameState
