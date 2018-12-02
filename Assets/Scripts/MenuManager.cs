@@ -12,6 +12,7 @@ public class MenuManager : MonoBehaviour {
     readonly string strDressup = "DressUpPanel";
     readonly string strCountDown = "CountDownPanel";
     readonly string strGame = "GamePanel";
+    readonly string strEnding = "EndingPanel";
     readonly string strScriptBucket = "ScriptBucket";
     readonly string strCountDownText = "CountDownText";
 
@@ -26,7 +27,8 @@ public class MenuManager : MonoBehaviour {
         CHOOSE,
         DRESSUP,
         COUNTDOWN,
-        GAME
+        GAME,
+        ENDING
     }
 
     GameObject menuPanel;
@@ -36,6 +38,7 @@ public class MenuManager : MonoBehaviour {
     GameObject dressupPanel;
     GameObject countDownPanel;
     GameObject gamePanel;
+    GameObject endingPanel;
     Text countDownText;
 
     public static menuPanels currentMenu;
@@ -58,6 +61,7 @@ public class MenuManager : MonoBehaviour {
         countDownPanel = getMenuObject(strCountDown);
         countDownText = countDownPanel.transform.Find(strCountDownText).gameObject.GetComponent<Text>();
         gamePanel = getMenuObject(strGame);
+        endingPanel = getMenuObject(strEnding);
         onFirstMenu();
     }
 
@@ -90,6 +94,9 @@ public class MenuManager : MonoBehaviour {
             case menuPanels.GAME:
                 //Do nothing here. We can't go forward during GAME
                 break;
+            case menuPanels.ENDING:
+                //Do nothing here. We can't go forward during ENDING
+                break;
         }
     }
 
@@ -112,6 +119,9 @@ public class MenuManager : MonoBehaviour {
             case menuPanels.GAME:
                 //Do nothing here. We can't go backward during GAME
                 break;
+            case menuPanels.ENDING:
+                //Do nothing here. We can't go backward during ENDING
+                break;
         }
     }
 
@@ -126,6 +136,8 @@ public class MenuManager : MonoBehaviour {
                 choosePlayerPanel.SetActive(false);
                 dressupPanel.SetActive(false);
                 countDownPanel.SetActive(false);
+                gamePanel.SetActive(false);
+                endingPanel.SetActive(false);
                 break;
             case menuPanels.START:
                 joinPanel.SetActive(false);
@@ -133,6 +145,8 @@ public class MenuManager : MonoBehaviour {
                 choosePlayerPanel.SetActive(false);
                 dressupPanel.SetActive(false);
                 countDownPanel.SetActive(false);
+                gamePanel.SetActive(false);
+                endingPanel.SetActive(false);
                 break;
             case menuPanels.CHOOSE:
                 joinPanel.SetActive(false);
@@ -140,6 +154,8 @@ public class MenuManager : MonoBehaviour {
                 choosePlayerPanel.SetActive(true);
                 dressupPanel.SetActive(false);
                 countDownPanel.SetActive(false);
+                gamePanel.SetActive(false);
+                endingPanel.SetActive(false);
                 break;
             case menuPanels.DRESSUP:
                 joinPanel.SetActive(false);
@@ -147,6 +163,8 @@ public class MenuManager : MonoBehaviour {
                 choosePlayerPanel.SetActive(false);
                 dressupPanel.SetActive(true);
                 countDownPanel.SetActive(false);
+                gamePanel.SetActive(false);
+                endingPanel.SetActive(false);
                 break;
             case menuPanels.COUNTDOWN:
                 RequestGameStateChange(StaticData.AvailableGameStates.Starting);
@@ -155,6 +173,8 @@ public class MenuManager : MonoBehaviour {
                 choosePlayerPanel.SetActive(false);
                 dressupPanel.SetActive(false);
                 countDownPanel.SetActive(true);
+                gamePanel.SetActive(false);
+                endingPanel.SetActive(false);
                 StartCoroutine(startCountDown());
                 break;
             case menuPanels.GAME:
@@ -165,6 +185,17 @@ public class MenuManager : MonoBehaviour {
                 dressupPanel.SetActive(false);
                 countDownPanel.SetActive(false);
                 gamePanel.SetActive(true);
+                endingPanel.SetActive(false);
+                break;
+            case menuPanels.ENDING:
+                RequestGameStateChange(StaticData.AvailableGameStates.Playing);
+                joinPanel.SetActive(false);
+                startPanel.SetActive(false);
+                choosePlayerPanel.SetActive(false);
+                dressupPanel.SetActive(false);
+                countDownPanel.SetActive(false);
+                gamePanel.SetActive(false);
+                endingPanel.SetActive(true);
                 break;
         }
     }
