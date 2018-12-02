@@ -21,7 +21,8 @@ public class PlayersManager : MonoBehaviour {
 	public List<Player> listOfPlayers {get; private set;}
 	private List<Controller> listOfAvailableContollers;
 	private List<int> listOfAvailableIds;
-	SpriteManager srm;
+	private SpriteManager srm;
+    private GameWatcher gameWatcher;
 
 	void Start () {
 		listOfAvailableIds = new List<int> ();
@@ -43,6 +44,7 @@ public class PlayersManager : MonoBehaviour {
 			new Controller("C11")	//Controller 11
 		};
 		srm = GameObject.Find("ScriptBucket").GetComponent<SpriteManager>();
+        gameWatcher = this.gameObject.GetComponent<GameWatchet>();
 	}
 
 	void Update () {
@@ -84,9 +86,9 @@ public class PlayersManager : MonoBehaviour {
             Healthbar hb = healthBarGO.transform.Find("Foreground").GetComponent<Healthbar>();
             hb.character = characterGO.GetComponent<Character>();
             gamePanel.SetActive(false);
-
             newPlayer.healthBarGO = healthBarGO;
             newPlayer.characterGO = characterGO;
+            gameWatcher.addPlayer(characterGO);
             try {
                 characterGO.GetComponent<Character>().id = Int32.Parse(newPlayer.controller.name.Substring(1));
             } catch (FormatException e) {
